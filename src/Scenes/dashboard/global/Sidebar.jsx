@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { ProSidebar, Menu, MenuItem } from "react-pro-sidebar";
-import { Box, IconButton, Typography, useTheme } from "@mui/material";
+import { Box, IconButton, Typography, useTheme, useMediaQuery } from "@mui/material";
 import { Link, useLocation } from "react-router-dom";
 import "react-pro-sidebar/dist/css/styles.css";
 import { tokens } from "../../../themes";
+import { useData } from "../../../context/DataContext";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
 import ContactsOutlinedIcon from "@mui/icons-material/ContactsOutlined";
@@ -16,8 +17,9 @@ import PieChartOutlineOutlinedIcon from "@mui/icons-material/PieChartOutlineOutl
 import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
+import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 
-const Item = ({ title, to, icon, selected, setSelected }) => {
+const Item = ({ title, to, icon, selected, setSelected, isMobile, setIsSidebarToggled }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   return (
@@ -26,7 +28,12 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
       style={{
         color: colors.grey[100],
       }}
-      onClick={() => setSelected(title)}
+      onClick={() => {
+        setSelected(title);
+        if (isMobile && setIsSidebarToggled) {
+          setIsSidebarToggled(false);
+        }
+      }}
       icon={icon}
     >
       <Typography>{title}</Typography>
@@ -34,6 +41,7 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
     </MenuItem>
   );
 };
+
 const pathToTitle = {
   "/": "Dashboard",
   "/team": "Manage Team",
@@ -52,6 +60,8 @@ const Sidebar = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const location = useLocation();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  const { isSidebarToggled, setIsSidebarToggled } = useData();
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   const [selected, setSelected] = useState(
@@ -84,26 +94,36 @@ const Sidebar = () => {
         },
       }}
     >
-      <ProSidebar collapsed={isCollapsed}>
+      <ProSidebar
+        collapsed={!isMobile && isCollapsed}
+        toggled={isSidebarToggled}
+        breakPoint="md"
+        onToggle={(value) => setIsSidebarToggled(value)}
+      >
         <Menu iconShape="square">
-          {/* LOGO AND MENU ICON */}
+          {/* LOGO AND MENU / CLOSE ICON */}
           <MenuItem
-            onClick={() => setIsCollapsed(!isCollapsed)}
-            icon={isCollapsed ? <MenuOutlinedIcon /> : undefined}
+            onClick={() => {
+              if (isMobile) {
+                setIsSidebarToggled(false);
+              } else {
+                setIsCollapsed(!isCollapsed);
+              }
+            }}
+            icon={!isMobile && isCollapsed ? <MenuOutlinedIcon /> : undefined}
             style={{
               margin: "10px 0 20px 0",
               color: colors.grey[100],
             }}
           >
-            {!isCollapsed && (
-              <Box //1st item for logo
+            {(isMobile || !isCollapsed) && (
+              <Box
                 sx={{
                   display: "flex",
                   alignItems: "center",
-                  justifyContent: "flex-start",
-                  width: "fit-content",
-                  marginLeft: "15px",
-                  gap: "75px",
+                  justifyContent: "space-between",
+                  width: "100%",
+                  paddingRight: "10px",
                 }}
               >
                 <Typography
@@ -113,30 +133,41 @@ const Sidebar = () => {
                     padding: 0,
                     whiteSpace: "nowrap",
                     color: colors.grey[100],
+                    fontWeight: 700,
+                    fontSize: "20px",
                   }}
                 >
                   ADMINIS
                 </Typography>
 
                 <IconButton
-                  onClick={() => setIsCollapsed(!isCollapsed)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (isMobile) {
+                      setIsSidebarToggled(false);
+                    } else {
+                      setIsCollapsed(!isCollapsed);
+                    }
+                  }}
                   sx={{
                     margin: 0,
-                    padding: "4px",
+                    padding: "6px",
                     color: colors.grey[100],
                   }}
+                  title={isMobile ? "Close Sidebar" : "Collapse Sidebar"}
                 >
-                  <MenuOutlinedIcon />
+                  {isMobile ? <CloseOutlinedIcon /> : <MenuOutlinedIcon />}
                 </IconButton>
               </Box>
             )}
           </MenuItem>
 
-          {!isCollapsed && (
+          {/* Profile Details (hidden when collapsed on desktop) */}
+          {(isMobile || !isCollapsed) && (
             <Box
-              mb="35px"
+              mb="25px"
               sx={{
-                px: "65px",
+                px: { xs: "20px", sm: "40px", md: "50px" },
               }}
             >
               {/* Profile Image */}
@@ -145,36 +176,31 @@ const Sidebar = () => {
                 justifyContent="center"
                 alignItems="center"
                 sx={{
-                  mb: "14px",
-                  mt: "25px",
+                  mb: "12px",
+                  mt: "15px",
                 }}
               >
                 <img
                   alt="profile-user"
-                  width="90px"
-                  height="90px"
+                  width="80px"
+                  height="80px"
                   src="/assets/user.png"
                   style={{
                     cursor: "pointer",
                     borderRadius: "50%",
                     objectFit: "cover",
+                    border: `2px solid ${colors.greenAccent[500]}`,
                   }}
                 />
               </Box>
 
               {/* Profile Details */}
-              <Box
-                textAlign="center"
-                sx={{
-                  mb: "30px",
-                }}
-              >
+              <Box textAlign="center" sx={{ mb: "15px" }}>
                 <Typography
                   sx={{
-                    fontSize: "26px",
+                    fontSize: "22px",
                     fontWeight: 700,
-                    lineHeight: "32px",
-                    px: "10px",
+                    lineHeight: "28px",
                     color: colors.grey[100],
                     margin: 0,
                   }}
@@ -184,12 +210,11 @@ const Sidebar = () => {
 
                 <Typography
                   sx={{
-                    fontSize: "14px",
-                    fontWeight: 400,
+                    fontSize: "13px",
+                    fontWeight: 500,
                     lineHeight: "18px",
-                    px: "11px",
                     color: colors.greenAccent[500],
-                    marginTop: "3px",
+                    marginTop: "2px",
                   }}
                 >
                   VIP TRADER
@@ -197,20 +222,23 @@ const Sidebar = () => {
               </Box>
             </Box>
           )}
+
           {/* MENU ITEMS */}
-          <Box paddingLeft={isCollapsed ? undefined : "10%"}>
+          <Box paddingLeft={!isMobile && isCollapsed ? undefined : "6%"}>
             <Item
               title="Dashboard"
               to="/"
               icon={<HomeOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
+              isMobile={isMobile}
+              setIsSidebarToggled={setIsSidebarToggled}
             />
 
             <Typography
               variant="h6"
               color={colors.grey[300]}
-              sx={{ m: "15px 0 5px 20px" }}
+              sx={{ m: "15px 0 5px 20px", fontSize: "12px", letterSpacing: "1px" }}
             >
               Data
             </Typography>
@@ -220,6 +248,8 @@ const Sidebar = () => {
               icon={<PeopleOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
+              isMobile={isMobile}
+              setIsSidebarToggled={setIsSidebarToggled}
             />
             <Item
               title="Contacts Information"
@@ -227,6 +257,8 @@ const Sidebar = () => {
               icon={<ContactsOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
+              isMobile={isMobile}
+              setIsSidebarToggled={setIsSidebarToggled}
             />
             <Item
               title="Invoices Balances"
@@ -234,12 +266,14 @@ const Sidebar = () => {
               icon={<ReceiptOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
+              isMobile={isMobile}
+              setIsSidebarToggled={setIsSidebarToggled}
             />
 
             <Typography
               variant="h6"
               color={colors.grey[300]}
-              sx={{ m: "15px 0 5px 20px" }}
+              sx={{ m: "15px 0 5px 20px", fontSize: "12px", letterSpacing: "1px" }}
             >
               Pages
             </Typography>
@@ -249,6 +283,8 @@ const Sidebar = () => {
               icon={<PersonOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
+              isMobile={isMobile}
+              setIsSidebarToggled={setIsSidebarToggled}
             />
             <Item
               title="Calendar"
@@ -256,6 +292,8 @@ const Sidebar = () => {
               icon={<CalendarTodayOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
+              isMobile={isMobile}
+              setIsSidebarToggled={setIsSidebarToggled}
             />
             <Item
               title="FAQ Page"
@@ -263,12 +301,14 @@ const Sidebar = () => {
               icon={<HelpOutlineOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
+              isMobile={isMobile}
+              setIsSidebarToggled={setIsSidebarToggled}
             />
 
             <Typography
               variant="h6"
               color={colors.grey[300]}
-              sx={{ m: "15px 0 5px 20px" }}
+              sx={{ m: "15px 0 5px 20px", fontSize: "12px", letterSpacing: "1px" }}
             >
               Charts
             </Typography>
@@ -278,6 +318,8 @@ const Sidebar = () => {
               icon={<BarChartOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
+              isMobile={isMobile}
+              setIsSidebarToggled={setIsSidebarToggled}
             />
             <Item
               title="Pie Chart"
@@ -285,6 +327,8 @@ const Sidebar = () => {
               icon={<PieChartOutlineOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
+              isMobile={isMobile}
+              setIsSidebarToggled={setIsSidebarToggled}
             />
             <Item
               title="Line Chart"
@@ -292,6 +336,8 @@ const Sidebar = () => {
               icon={<TimelineOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
+              isMobile={isMobile}
+              setIsSidebarToggled={setIsSidebarToggled}
             />
             <Item
               title="Geography Chart"
@@ -299,6 +345,8 @@ const Sidebar = () => {
               icon={<MapOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
+              isMobile={isMobile}
+              setIsSidebarToggled={setIsSidebarToggled}
             />
           </Box>
         </Menu>

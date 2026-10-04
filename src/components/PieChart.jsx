@@ -1,5 +1,5 @@
 import { ResponsivePie } from "@nivo/pie";
-import { Box, Typography, useTheme } from "@mui/material";
+import { Box, Typography, useTheme, useMediaQuery } from "@mui/material";
 import { tokens } from "../themes";
 import { mockPieData } from "../data/mockData";
 import { useData } from "../context/DataContext";
@@ -7,6 +7,7 @@ import { useData } from "../context/DataContext";
 const PieChart = ({ data: propData }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const { pieData } = useData();
 
   const chartData = propData || pieData || mockPieData;
@@ -19,6 +20,10 @@ const PieChart = ({ data: propData }) => {
     );
   }
 
+  const margin = isMobile
+    ? { top: 25, right: 25, bottom: 65, left: 25 }
+    : { top: 40, right: 80, bottom: 80, left: 80 };
+
   return (
     <ResponsivePie
       data={chartData}
@@ -29,37 +34,38 @@ const PieChart = ({ data: propData }) => {
               stroke: colors.grey[100],
             },
           },
-
           legend: {
             text: {
               fill: colors.grey[100],
             },
           },
-
           ticks: {
             line: {
               stroke: colors.grey[100],
               strokeWidth: 1,
             },
-
             text: {
               fill: colors.grey[100],
             },
           },
         },
-
         legends: {
           text: {
             fill: colors.grey[100],
+            fontSize: isMobile ? 10 : 12,
+          },
+        },
+        tooltip: {
+          container: {
+            background: colors.primary[400],
+            color: colors.grey[100],
+            fontSize: 12,
+            borderRadius: 4,
+            boxShadow: "0 4px 12px rgba(0,0,0,0.5)",
           },
         },
       }}
-      margin={{
-        top: 40,
-        right: 80,
-        bottom: 80,
-        left: 80,
-      }}
+      margin={margin}
       innerRadius={0.5}
       padAngle={0.7}
       cornerRadius={3}
@@ -89,7 +95,6 @@ const PieChart = ({ data: propData }) => {
           padding: 1,
           stagger: true,
         },
-
         {
           id: "lines",
           type: "patternLines",
@@ -106,21 +111,20 @@ const PieChart = ({ data: propData }) => {
           direction: "row",
           justify: false,
           translateX: 0,
-          translateY: 56,
+          translateY: isMobile ? 50 : 56,
           itemsSpacing: 0,
-          itemWidth: 100,
+          itemWidth: isMobile ? 65 : 85,
           itemHeight: 18,
           itemTextColor: colors.grey[100],
           itemDirection: "left-to-right",
           itemOpacity: 1,
-          symbolSize: 18,
+          symbolSize: isMobile ? 12 : 16,
           symbolShape: "circle",
-
           effects: [
             {
               on: "hover",
               style: {
-                itemTextColor: colors.grey[100],
+                itemTextColor: colors.greenAccent[400],
               },
             },
           ],

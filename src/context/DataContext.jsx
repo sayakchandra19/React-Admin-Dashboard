@@ -60,6 +60,10 @@ export const DataProvider = ({ children }) => {
     getData(STORAGE_KEYS.GEOGRAPHY, mockGeographyData)
   );
 
+  // Mobile Responsive Sidebar State
+  const [isSidebarToggled, setIsSidebarToggled] = useState(false);
+  const toggleSidebar = () => setIsSidebarToggled((prev) => !prev);
+
   // Global Notification State
   const [notification, setNotification] = useState({
     open: false,
@@ -360,6 +364,10 @@ export const DataProvider = ({ children }) => {
         notification,
         notify,
         closeNotification,
+        // Mobile Sidebar
+        isSidebarToggled,
+        setIsSidebarToggled,
+        toggleSidebar,
       }}
     >
       {children}

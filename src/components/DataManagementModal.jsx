@@ -68,14 +68,15 @@ const DataManagementModal = ({ open, onClose }) => {
             color: colors.grey[100],
             borderRadius: "10px",
             border: `1px solid ${colors.primary[500]}`,
-            p: 1,
+            p: { xs: 0.5, sm: 1 },
+            m: { xs: 1.5, sm: 3 },
           },
         }}
       >
         <DialogTitle
           sx={{
             fontWeight: 700,
-            fontSize: "20px",
+            fontSize: { xs: "17px", sm: "20px" },
             color: colors.grey[100],
             borderBottom: `1px solid ${colors.primary[500]}`,
             pb: 1.5,
@@ -107,8 +108,10 @@ const DataManagementModal = ({ open, onClose }) => {
             {/* Export JSON */}
             <Box
               display="flex"
+              flexDirection={{ xs: "column", sm: "row" }}
               justifyContent="space-between"
-              alignItems="center"
+              alignItems={{ xs: "flex-start", sm: "center" }}
+              gap={1.5}
               p={2}
               sx={{
                 backgroundColor: colors.primary[500],
@@ -131,6 +134,9 @@ const DataManagementModal = ({ open, onClose }) => {
                   backgroundColor: colors.blueAccent[700],
                   color: colors.grey[100],
                   fontWeight: 600,
+                  fontSize: "12px",
+                  whiteSpace: "nowrap",
+                  width: { xs: "100%", sm: "auto" },
                   textTransform: "none",
                   "&:hover": { backgroundColor: colors.blueAccent[800] },
                 }}
@@ -142,8 +148,10 @@ const DataManagementModal = ({ open, onClose }) => {
             {/* Import JSON */}
             <Box
               display="flex"
+              flexDirection={{ xs: "column", sm: "row" }}
               justifyContent="space-between"
-              alignItems="center"
+              alignItems={{ xs: "flex-start", sm: "center" }}
+              gap={1.5}
               p={2}
               sx={{
                 backgroundColor: colors.primary[500],
@@ -173,6 +181,9 @@ const DataManagementModal = ({ open, onClose }) => {
                   backgroundColor: colors.greenAccent[600],
                   color: colors.grey[100],
                   fontWeight: 600,
+                  fontSize: "12px",
+                  whiteSpace: "nowrap",
+                  width: { xs: "100%", sm: "auto" },
                   textTransform: "none",
                   "&:hover": { backgroundColor: colors.greenAccent[700] },
                 }}
@@ -184,8 +195,10 @@ const DataManagementModal = ({ open, onClose }) => {
             {/* Reset Demo Data */}
             <Box
               display="flex"
+              flexDirection={{ xs: "column", sm: "row" }}
               justifyContent="space-between"
-              alignItems="center"
+              alignItems={{ xs: "flex-start", sm: "center" }}
+              gap={1.5}
               p={2}
               sx={{
                 backgroundColor: colors.primary[500],
@@ -208,19 +221,27 @@ const DataManagementModal = ({ open, onClose }) => {
                   color: colors.greenAccent[400],
                   borderColor: colors.greenAccent[400],
                   fontWeight: 600,
+                  fontSize: "12px",
+                  whiteSpace: "nowrap",
+                  width: { xs: "100%", sm: "auto" },
                   textTransform: "none",
-                  "&:hover": { borderColor: colors.greenAccent[300] },
+                  "&:hover": {
+                    borderColor: colors.greenAccent[300],
+                    backgroundColor: "rgba(76, 206, 172, 0.08)",
+                  },
                 }}
               >
-                Reset Demo
+                Reset Defaults
               </Button>
             </Box>
 
-            {/* Clear All Data */}
+            {/* Clear All Storage */}
             <Box
               display="flex"
+              flexDirection={{ xs: "column", sm: "row" }}
               justifyContent="space-between"
-              alignItems="center"
+              alignItems={{ xs: "flex-start", sm: "center" }}
+              gap={1.5}
               p={2}
               sx={{
                 backgroundColor: colors.primary[500],
@@ -228,11 +249,11 @@ const DataManagementModal = ({ open, onClose }) => {
               }}
             >
               <Box>
-                <Typography fontWeight="600" color={colors.redAccent[400]}>
+                <Typography fontWeight="600" color={colors.grey[100]}>
                   Clear All Data
                 </Typography>
                 <Typography variant="caption" color={colors.grey[300]}>
-                  Wipe all stored records from browser Local Storage.
+                  Erase all application records from Local Storage.
                 </Typography>
               </Box>
               <Button
@@ -241,8 +262,11 @@ const DataManagementModal = ({ open, onClose }) => {
                 onClick={() => setConfirmClearOpen(true)}
                 sx={{
                   backgroundColor: colors.redAccent[600],
-                  color: "#ffffff",
+                  color: colors.grey[100],
                   fontWeight: 600,
+                  fontSize: "12px",
+                  whiteSpace: "nowrap",
+                  width: { xs: "100%", sm: "auto" },
                   textTransform: "none",
                   "&:hover": { backgroundColor: colors.redAccent[700] },
                 }}
@@ -256,11 +280,12 @@ const DataManagementModal = ({ open, onClose }) => {
         <DialogActions sx={{ p: 2 }}>
           <Button
             onClick={onClose}
-            variant="outlined"
+            variant="contained"
             sx={{
+              backgroundColor: colors.blueAccent[700],
               color: colors.grey[100],
-              borderColor: colors.grey[400],
               textTransform: "none",
+              fontWeight: 600,
             }}
           >
             Close
@@ -271,12 +296,15 @@ const DataManagementModal = ({ open, onClose }) => {
       {/* Confirmation Dialogs */}
       <ConfirmDialog
         open={confirmResetOpen}
-        title="Reset to Demo Data?"
-        message="This will overwrite current records with the default mockData. Continue?"
+        title="Reset Demo Data"
+        message="Are you sure you want to reset all data back to the default demo values? Any customized records in local storage will be replaced."
+        confirmText="Reset"
+        confirmColor="warning"
         onConfirm={() => {
           resetToDemo();
+          setConfirmResetOpen(false);
           setImportStatus({
-            success: "Demo data has been restored to Local Storage!",
+            success: "Demo data restored successfully!",
             error: "",
           });
         }}
@@ -285,12 +313,15 @@ const DataManagementModal = ({ open, onClose }) => {
 
       <ConfirmDialog
         open={confirmClearOpen}
-        title="Clear All Stored Data?"
-        message="Are you sure you want to permanently erase all custom records from Local Storage? This cannot be undone."
+        title="Clear All Application Data"
+        message="Are you sure you want to completely erase all data in Local Storage? This action cannot be undone."
+        confirmText="Clear Everything"
+        confirmColor="error"
         onConfirm={() => {
           clearAll();
+          setConfirmClearOpen(false);
           setImportStatus({
-            success: "All data cleared from Local Storage.",
+            success: "All Local Storage data cleared.",
             error: "",
           });
         }}

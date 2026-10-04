@@ -205,18 +205,21 @@ const Invoices = () => {
 
   return (
     <Box
-      m="20px"
       sx={{
-        padding: "10px 20px !important",
+        margin: { xs: "12px", sm: "20px" },
+        padding: { xs: "0", sm: "10px" },
       }}
     >
       {/* Top Header & Action */}
       <Box
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-        flexWrap="wrap"
-        gap="15px"
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: { xs: "flex-start", sm: "center" },
+          flexDirection: { xs: "column", sm: "row" },
+          gap: "12px",
+          width: "100%",
+        }}
       >
         <Header title="INVOICES" subtitle="List of Invoice balances" />
 
@@ -227,10 +230,11 @@ const Invoices = () => {
           sx={{
             backgroundColor: colors.blueAccent[700],
             color: colors.grey[100],
-            fontSize: "14px",
+            fontSize: "13px",
             fontWeight: "bold",
-            padding: "10px 20px",
+            padding: "9px 18px",
             textTransform: "none",
+            alignSelf: { xs: "stretch", sm: "auto" },
             "&:hover": {
               backgroundColor: colors.blueAccent[800],
             },
@@ -279,11 +283,14 @@ const Invoices = () => {
 
       {/* Invoices DataGrid Table */}
       <Box
-        m="20px 0 0 0"
-        height="70vh"
         sx={{
+          margin: "15px 0 0 0",
+          height: { xs: "65vh", sm: "70vh" },
+          width: "100%",
+          overflowX: "auto",
           "& .MuiDataGrid-root": {
             border: "none",
+            minWidth: "650px",
           },
           "& .MuiDataGrid-cell": {
             borderBottom: "1px solid #3a4558",

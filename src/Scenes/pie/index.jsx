@@ -4,9 +4,15 @@ import PieChart from "../../components/PieChart";
 
 const Pie = () => {
   return (
-    <Box m="20px">
+    <Box sx={{ margin: { xs: "12px", sm: "20px" } }}>
       <Header title="Pie Chart" subtitle="Simple Pie Chart" />
-      <Box height="75vh" sx={{ height: "75vh", width: "100%" }} style={{ height: "75vh", width: "100%" }}>
+      <Box
+        sx={{
+          height: { xs: "60vh", sm: "70vh", md: "75vh" },
+          width: "100%",
+          overflow: "hidden",
+        }}
+      >
         <PieChart />
       </Box>
     </Box>

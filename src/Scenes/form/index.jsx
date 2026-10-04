@@ -129,9 +129,9 @@ const Form = () => {
 
   return (
     <Box
-      m="20px"
       sx={{
-        padding: "10px 20px !important",
+        margin: { xs: "12px", sm: "20px" },
+        padding: { xs: "0", sm: "10px" },
       }}
     >
       <Header title="CREATE USER" subtitle="Create a new user profile" />
@@ -141,8 +141,8 @@ const Form = () => {
         borderRadius="10px"
         border="1px solid #3a4558"
         boxShadow="0 8px 32px rgba(0, 0, 0, 0.25)"
-        p={{ xs: "20px", sm: "30px", md: "35px" }}
-        m="30px 0 0 0"
+        p={{ xs: "18px 14px", sm: "25px", md: "35px" }}
+        m={{ xs: "15px 0 0 0", sm: "25px 0 0 0" }}
       >
         <Formik
           onSubmit={handelFormSubmit}
@@ -414,9 +414,10 @@ const Form = () => {
                 {/* Form Action Buttons */}
                 <Box
                   display="flex"
-                  justifyContent="flex-end"
+                  justifyContent={{ xs: "stretch", sm: "flex-end" }}
                   alignItems="center"
-                  gap="15px"
+                  flexDirection={{ xs: "column-reverse", sm: "row" }}
+                  gap={{ xs: "10px", sm: "15px" }}
                   mt="15px"
                   sx={{
                     gridColumn: "span 4",
@@ -429,6 +430,7 @@ const Form = () => {
                     onClick={handleReset}
                     variant="outlined"
                     startIcon={<RestartAltOutlinedIcon />}
+                    fullWidth={!isNonMobile}
                     sx={{
                       color: colors.grey[100],
                       borderColor: "#3a4558",
@@ -437,6 +439,7 @@ const Form = () => {
                       padding: "8px 18px",
                       borderRadius: "6px",
                       textTransform: "none",
+                      width: { xs: "100%", sm: "auto" },
                       "&:hover": {
                         borderColor: colors.grey[300],
                         backgroundColor: "rgba(255, 255, 255, 0.05)",
@@ -450,6 +453,7 @@ const Form = () => {
                     type="submit"
                     variant="contained"
                     startIcon={<PersonAddAlt1OutlinedIcon />}
+                    fullWidth={!isNonMobile}
                     sx={{
                       backgroundColor: colors.greenAccent[600],
                       color: colors.grey[100],
@@ -459,6 +463,7 @@ const Form = () => {
                       borderRadius: "6px",
                       textTransform: "none",
                       letterSpacing: "0.3px",
+                      width: { xs: "100%", sm: "auto" },
                       boxShadow: "0 4px 14px rgba(61, 165, 138, 0.35)",
                       transition: "all 0.25s ease",
                       "&:hover": {

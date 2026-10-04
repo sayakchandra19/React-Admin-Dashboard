@@ -223,13 +223,10 @@ const Dashboard = () => {
         sx={{
           display: "flex",
           justifyContent: "space-between",
-          alignItems: "flex-start",
+          alignItems: { xs: "flex-start", sm: "center" },
+          flexDirection: { xs: "column", sm: "row" },
+          gap: { xs: "12px", sm: "20px" },
           marginBottom: "20px",
-
-          "@media (max-width: 700px)": {
-            flexDirection: "column",
-            gap: "15px",
-          },
         }}
       >
         <Header
@@ -245,9 +242,10 @@ const Dashboard = () => {
             fontSize: "13px",
             fontWeight: "bold",
             padding: "10px 18px",
-            borderRadius: "3px",
+            borderRadius: "4px",
             textTransform: "uppercase",
-
+            alignSelf: { xs: "stretch", sm: "auto" },
+            textAlign: "center",
             "&:hover": {
               backgroundColor: colors.blueAccent[800],
             },
@@ -259,7 +257,6 @@ const Dashboard = () => {
               fontSize: "18px",
             }}
           />
-
           Download Reports
         </Button>
       </Box>
@@ -271,27 +268,10 @@ const Dashboard = () => {
       <Box
         sx={{
           display: "grid",
-
-          gridTemplateColumns:
-            "repeat(12, minmax(0, 1fr))",
-
-          gridAutoRows: "140px",
-
-          gap: "20px",
-
+          gridTemplateColumns: "repeat(12, minmax(0, 1fr))",
+          gridAutoRows: { xs: "auto", sm: "140px" },
+          gap: { xs: "14px", sm: "18px", md: "20px" },
           width: "100%",
-
-          /* TABLET */
-          "@media (max-width: 1100px)": {
-            gridTemplateColumns:
-              "repeat(6, minmax(0, 1fr))",
-          },
-
-          /* MOBILE */
-          "@media (max-width: 700px)": {
-            gridTemplateColumns: "1fr",
-            gridAutoRows: "auto",
-          },
         }}
       >
 
@@ -302,19 +282,17 @@ const Dashboard = () => {
         <Box
           sx={{
             gridColumn: {
-              xs: "span 1",
-              sm: "span 3",
+              xs: "span 12",
+              sm: "span 6",
+              md: "span 3",
             },
-
             backgroundColor: colors.primary[400],
-
+            borderRadius: "4px",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-
             minWidth: 0,
-
-            height: "100%",
+            minHeight: { xs: "100px", sm: "140px" },
           }}
         >
           <StatBox
@@ -340,19 +318,17 @@ const Dashboard = () => {
         <Box
           sx={{
             gridColumn: {
-              xs: "span 1",
-              sm: "span 3",
+              xs: "span 12",
+              sm: "span 6",
+              md: "span 3",
             },
-
             backgroundColor: colors.primary[400],
-
+            borderRadius: "4px",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-
             minWidth: 0,
-
-            height: "100%",
+            minHeight: { xs: "100px", sm: "140px" },
           }}
         >
           <StatBox
@@ -378,19 +354,17 @@ const Dashboard = () => {
         <Box
           sx={{
             gridColumn: {
-              xs: "span 1",
-              sm: "span 3",
+              xs: "span 12",
+              sm: "span 6",
+              md: "span 3",
             },
-
             backgroundColor: colors.primary[400],
-
+            borderRadius: "4px",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-
             minWidth: 0,
-
-            height: "100%",
+            minHeight: { xs: "100px", sm: "140px" },
           }}
         >
           <StatBox
@@ -416,19 +390,17 @@ const Dashboard = () => {
         <Box
           sx={{
             gridColumn: {
-              xs: "span 1",
-              sm: "span 3",
+              xs: "span 12",
+              sm: "span 6",
+              md: "span 3",
             },
-
             backgroundColor: colors.primary[400],
-
+            borderRadius: "4px",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-
             minWidth: 0,
-
-            height: "100%",
+            minHeight: { xs: "100px", sm: "140px" },
           }}
         >
           <StatBox
@@ -455,36 +427,28 @@ const Dashboard = () => {
         <Box
           sx={{
             gridColumn: {
-              xs: "span 1",
-              sm: "span 6",
-              md: "span 8",
+              xs: "span 12",
+              lg: "span 8",
             },
-
             gridRow: {
               xs: "auto",
-              md: "span 2",
+              lg: "span 2",
             },
-
             backgroundColor: colors.primary[400],
-
+            borderRadius: "4px",
             minWidth: 0,
-
             overflow: "hidden",
-
             height: {
-              xs: "350px",
-              md: "300px",
+              xs: "320px",
+              sm: "300px",
             },
           }}
         >
           <Box
             sx={{
-              padding: "18px 20px 0 20px",
-
+              padding: { xs: "14px 16px 0 16px", sm: "18px 20px 0 20px" },
               display: "flex",
-
               justifyContent: "space-between",
-
               alignItems: "center",
             }}
           >
@@ -493,6 +457,7 @@ const Dashboard = () => {
                 variant="h5"
                 fontWeight="600"
                 color={colors.grey[100]}
+                fontSize={{ xs: "14px", sm: "16px" }}
               >
                 Revenue Generated
               </Typography>
@@ -501,6 +466,7 @@ const Dashboard = () => {
                 variant="h3"
                 fontWeight="bold"
                 color={colors.greenAccent[500]}
+                fontSize={{ xs: "20px", sm: "24px" }}
               >
                 ${calculatedStats.revenue}
               </Typography>
@@ -520,7 +486,7 @@ const Dashboard = () => {
 
           <Box
             sx={{
-              height: "225px",
+              height: { xs: "240px", sm: "225px" },
               width: "100%",
               marginTop: "-5px",
             }}
@@ -537,25 +503,20 @@ const Dashboard = () => {
         <Box
           sx={{
             gridColumn: {
-              xs: "span 1",
-              sm: "span 6",
-              md: "span 4",
+              xs: "span 12",
+              lg: "span 4",
             },
-
             gridRow: {
               xs: "auto",
-              md: "span 2",
+              lg: "span 2",
             },
-
             backgroundColor: colors.primary[400],
-
+            borderRadius: "4px",
             minWidth: 0,
-
             overflow: "auto",
-
             height: {
-              xs: "350px",
-              md: "300px",
+              xs: "320px",
+              sm: "300px",
             },
           }}
         >
@@ -564,17 +525,19 @@ const Dashboard = () => {
               display: "flex",
               justifyContent: "space-between",
               alignItems: "center",
-
-              borderBottom:
-                `2px solid ${colors.primary[500]}`,
-
-              padding: "15px",
+              borderBottom: `2px solid ${colors.primary[500]}`,
+              padding: { xs: "12px 14px", sm: "15px" },
+              position: "sticky",
+              top: 0,
+              backgroundColor: colors.primary[400],
+              zIndex: 2,
             }}
           >
             <Typography
               color={colors.grey[100]}
               variant="h5"
               fontWeight="600"
+              fontSize={{ xs: "14px", sm: "16px" }}
             >
               Recent Transactions
             </Typography>
@@ -583,14 +546,10 @@ const Dashboard = () => {
               size="small"
               onClick={handleOpenAddTx}
               sx={{
-                backgroundColor:
-                  colors.greenAccent[600],
-
+                backgroundColor: colors.greenAccent[600],
                 color: colors.grey[100],
-
                 "&:hover": {
-                  backgroundColor:
-                    colors.greenAccent[700],
+                  backgroundColor: colors.greenAccent[700],
                 },
               }}
             >
@@ -617,8 +576,7 @@ const Dashboard = () => {
                 onClick={handleOpenAddTx}
                 sx={{
                   color: colors.greenAccent[400],
-                  borderColor:
-                    colors.greenAccent[400],
+                  borderColor: colors.greenAccent[400],
                   textTransform: "none",
                 }}
               >
@@ -631,20 +589,13 @@ const Dashboard = () => {
                 key={`${transaction.txId}-${i}`}
                 sx={{
                   display: "flex",
-                  justifyContent:
-                    "space-between",
+                  justifyContent: "space-between",
                   alignItems: "center",
-
                   gap: "10px",
-
-                  borderBottom:
-                    `1px solid ${colors.primary[500]}`,
-
-                  padding: "10px 15px",
-
+                  borderBottom: `1px solid ${colors.primary[500]}`,
+                  padding: "10px 14px",
                   "&:hover": {
-                    backgroundColor:
-                      colors.primary[500],
+                    backgroundColor: colors.primary[500],
                   },
                 }}
               >
@@ -655,9 +606,7 @@ const Dashboard = () => {
                   }}
                 >
                   <Typography
-                    color={
-                      colors.greenAccent[500]
-                    }
+                    color={colors.greenAccent[500]}
                     fontSize="13px"
                     fontWeight="600"
                   >
@@ -688,19 +637,12 @@ const Dashboard = () => {
                 >
                   <Box
                     sx={{
-                      backgroundColor:
-                        colors.greenAccent[500],
-
+                      backgroundColor: colors.greenAccent[500],
                       color: colors.grey[900],
-
-                      padding: "5px 8px",
-
+                      padding: "4px 7px",
                       borderRadius: "3px",
-
                       fontSize: "11px",
-
                       fontWeight: 600,
-
                       whiteSpace: "nowrap",
                     }}
                   >
@@ -709,40 +651,24 @@ const Dashboard = () => {
 
                   <IconButton
                     size="small"
-                    onClick={() =>
-                      handleOpenEditTx(
-                        transaction
-                      )
-                    }
+                    onClick={() => handleOpenEditTx(transaction)}
                     sx={{
                       color: colors.grey[300],
                       padding: "3px",
                     }}
                   >
-                    <EditOutlinedIcon
-                      sx={{
-                        fontSize: "14px",
-                      }}
-                    />
+                    <EditOutlinedIcon sx={{ fontSize: "14px" }} />
                   </IconButton>
 
                   <IconButton
                     size="small"
-                    onClick={() =>
-                      handleDeleteTxClick(
-                        transaction
-                      )
-                    }
+                    onClick={() => handleDeleteTxClick(transaction)}
                     sx={{
                       color: colors.grey[300],
                       padding: "3px",
                     }}
                   >
-                    <DeleteOutlineIcon
-                      sx={{
-                        fontSize: "14px",
-                      }}
-                    />
+                    <DeleteOutlineIcon sx={{ fontSize: "14px" }} />
                   </IconButton>
                 </Box>
               </Box>
@@ -758,25 +684,21 @@ const Dashboard = () => {
         <Box
           sx={{
             gridColumn: {
-              xs: "span 1",
+              xs: "span 12",
               sm: "span 6",
-              md: "span 4",
+              lg: "span 4",
             },
-
             gridRow: {
               xs: "auto",
-              md: "span 2",
+              lg: "span 2",
             },
-
             backgroundColor: colors.primary[400],
-
-            padding: "25px",
-
+            borderRadius: "4px",
+            padding: { xs: "18px 20px", sm: "25px" },
             minWidth: 0,
-
             height: {
-              xs: "350px",
-              md: "300px",
+              xs: "320px",
+              sm: "300px",
             },
           }}
         >
@@ -784,6 +706,7 @@ const Dashboard = () => {
             variant="h5"
             fontWeight="600"
             color={colors.grey[100]}
+            fontSize={{ xs: "14px", sm: "16px" }}
           >
             Campaign
           </Typography>
@@ -793,11 +716,10 @@ const Dashboard = () => {
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-
-              marginTop: "20px",
+              marginTop: { xs: "12px", sm: "20px" },
             }}
           >
-            <ProgressCircle size="125" />
+            <ProgressCircle size="115" />
 
             <Typography
               variant="h5"
@@ -806,22 +728,21 @@ const Dashboard = () => {
                 marginTop: "12px",
                 textAlign: "center",
                 fontWeight: 600,
+                fontSize: { xs: "14px", sm: "16px" },
               }}
             >
-              ${calculatedStats.revenue}
-              {" "}revenue generated
+              ${calculatedStats.revenue}{" "}revenue generated
             </Typography>
 
             <Typography
               color={colors.grey[100]}
               sx={{
-                marginTop: "8px",
+                marginTop: "6px",
                 textAlign: "center",
-                fontSize: "13px",
+                fontSize: "12px",
               }}
             >
-              Includes live expenditures,
-              sales & invoices
+              Includes live expenditures, sales & invoices
             </Typography>
           </Box>
         </Box>
@@ -834,25 +755,21 @@ const Dashboard = () => {
         <Box
           sx={{
             gridColumn: {
-              xs: "span 1",
+              xs: "span 12",
               sm: "span 6",
-              md: "span 4",
+              lg: "span 4",
             },
-
             gridRow: {
               xs: "auto",
-              md: "span 2",
+              lg: "span 2",
             },
-
             backgroundColor: colors.primary[400],
-
+            borderRadius: "4px",
             minWidth: 0,
-
             overflow: "hidden",
-
             height: {
-              xs: "350px",
-              md: "300px",
+              xs: "320px",
+              sm: "300px",
             },
           }}
         >
@@ -861,8 +778,8 @@ const Dashboard = () => {
             fontWeight="600"
             color={colors.grey[100]}
             sx={{
-              padding:
-                "25px 25px 0 25px",
+              padding: { xs: "16px 16px 0 16px", sm: "25px 25px 0 25px" },
+              fontSize: { xs: "14px", sm: "16px" },
             }}
           >
             Sales Quantity
@@ -870,14 +787,12 @@ const Dashboard = () => {
 
           <Box
             sx={{
-              height: "240px",
+              height: { xs: "255px", sm: "240px" },
               width: "100%",
               marginTop: "-10px",
             }}
           >
-            <BarCharts
-              isDashboard={true}
-            />
+            <BarCharts isDashboard={true} />
           </Box>
         </Box>
 
@@ -889,25 +804,21 @@ const Dashboard = () => {
         <Box
           sx={{
             gridColumn: {
-              xs: "span 1",
-              sm: "span 6",
-              md: "span 4",
+              xs: "span 12",
+              sm: "span 12",
+              lg: "span 4",
             },
-
             gridRow: {
               xs: "auto",
-              md: "span 2",
+              lg: "span 2",
             },
-
             backgroundColor: colors.primary[400],
-
+            borderRadius: "4px",
             minWidth: 0,
-
             overflow: "hidden",
-
             height: {
-              xs: "350px",
-              md: "300px",
+              xs: "320px",
+              sm: "300px",
             },
           }}
         >
@@ -916,8 +827,8 @@ const Dashboard = () => {
             fontWeight="600"
             color={colors.grey[100]}
             sx={{
-              padding:
-                "25px 25px 0 25px",
+              padding: { xs: "16px 16px 0 16px", sm: "25px 25px 0 25px" },
+              fontSize: { xs: "14px", sm: "16px" },
             }}
           >
             Geography Based Traffic
@@ -925,14 +836,12 @@ const Dashboard = () => {
 
           <Box
             sx={{
-              height: "240px",
+              height: { xs: "255px", sm: "240px" },
               width: "100%",
               marginTop: "-10px",
             }}
           >
-            <GeographyChart
-              isDashboard={true}
-            />
+            <GeographyChart isDashboard={true} />
           </Box>
         </Box>
       </Box>

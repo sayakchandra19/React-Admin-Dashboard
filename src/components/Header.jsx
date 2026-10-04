@@ -6,16 +6,16 @@ const Header = ({ title, subtitle }) => {
   const colors = tokens(theme.palette.mode);
 
   return (
-    <Box mb="30px">
+    <Box mb={{ xs: "15px", sm: "25px" }}>
       <Typography
         variant="h2"
         sx={{
           fontFamily: '"Source Sans Pro", sans-serif',
-          fontSize: "32px",
+          fontSize: { xs: "22px", sm: "26px", md: "32px" },
           fontWeight: 700,
-          padding: "0 12px",
           color: colors.grey[100],
-          mb: "5px",
+          mb: "4px",
+          lineHeight: 1.2,
         }}
       >
         {title}
@@ -25,9 +25,9 @@ const Header = ({ title, subtitle }) => {
         variant="h5"
         sx={{
           fontFamily: '"Source Sans Pro", sans-serif',
-          fontSize: "16px",
-          padding: "15px 12px",
+          fontSize: { xs: "13px", sm: "14px", md: "16px" },
           color: colors.greenAccent[400],
+          margin: 0,
         }}
       >
         {subtitle}

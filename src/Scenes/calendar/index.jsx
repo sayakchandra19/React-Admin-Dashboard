@@ -26,6 +26,7 @@ import {
   FormControlLabel,
   Checkbox,
   IconButton,
+  useMediaQuery,
 } from "@mui/material";
 
 import { formatDate } from "@fullcalendar/core";
@@ -35,6 +36,7 @@ import EventAvailableIcon from "@mui/icons-material/EventAvailable";
 const Calendar = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const { events, addEvent, updateEvent, deleteEvent } = useData();
 
   // Add / Edit Modal State
@@ -129,9 +131,18 @@ const Calendar = () => {
   };
 
   return (
-    <Box sx={{ margin: "20px" }}>
+    <Box sx={{ margin: { xs: "12px", sm: "20px" } }}>
       {/* ================= HEADER ================= */}
-      <Box display="flex" justifyContent="space-between" alignItems="center" flexWrap="wrap">
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: { xs: "flex-start", sm: "center" },
+          flexDirection: { xs: "column", sm: "row" },
+          gap: "12px",
+          width: "100%",
+        }}
+      >
         <Header title="CALENDAR" subtitle="Full Calendar Interactive Page with Local Storage" />
         <Button
           variant="contained"
@@ -151,7 +162,10 @@ const Calendar = () => {
             backgroundColor: colors.blueAccent[700],
             color: colors.grey[100],
             fontWeight: "bold",
+            fontSize: "13px",
+            padding: "9px 18px",
             textTransform: "none",
+            alignSelf: { xs: "stretch", sm: "auto" },
             "&:hover": { backgroundColor: colors.blueAccent[800] },
           }}
         >
@@ -174,11 +188,11 @@ const Calendar = () => {
         <Box
           sx={{
             width: { xs: "100%", md: "25%" },
-            minWidth: "220px",
-            maxHeight: "75vh",
+            minWidth: { xs: "100%", md: "220px" },
+            maxHeight: { xs: "220px", md: "75vh" },
             overflowY: "auto",
             backgroundColor: colors.primary[400],
-            padding: "15px",
+            padding: { xs: "12px", sm: "15px" },
             borderRadius: "6px",
             boxSizing: "border-box",
             border: `1px solid ${colors.primary[500]}`,
@@ -264,13 +278,24 @@ const Calendar = () => {
             width: "100%",
             minWidth: 0,
             backgroundColor: colors.primary[400],
-            p: 2,
+            p: { xs: 1, sm: 2 },
             borderRadius: "6px",
             border: `1px solid ${colors.primary[500]}`,
+            "& .fc .fc-toolbar": {
+              flexDirection: { xs: "column", sm: "row" },
+              gap: 1,
+            },
+            "& .fc .fc-toolbar-title": {
+              fontSize: { xs: "16px", sm: "20px" },
+            },
+            "& .fc .fc-button": {
+              fontSize: { xs: "11px", sm: "13px" },
+              padding: { xs: "4px 8px", sm: "6px 12px" },
+            },
           }}
         >
           <FullCalendar
-            height="72vh"
+            height={isMobile ? 480 : "72vh"}
             plugins={[
               dayGridPlugin,
               timeGridPlugin,
@@ -281,7 +306,7 @@ const Calendar = () => {
             headerToolbar={{
               left: "prev,next today",
               center: "title",
-              right: "dayGridMonth,timeGridWeek,timeGridDay,listWeek",
+              right: isMobile ? "dayGridMonth,listWeek" : "dayGridMonth,timeGridWeek,timeGridDay,listWeek",
             }}
             editable={true}
             selectable={true}

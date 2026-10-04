@@ -12,7 +12,7 @@ const FAQ = () => {
   const colors = tokens(theme.palette.mode);
 
   return (
-    <Box m="20px">
+    <Box sx={{ margin: { xs: "12px", sm: "20px" } }}>
       <Header
         title="FAQ"
         subtitle="Frequently Asked Questions"

@@ -26,6 +26,7 @@ import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import SearchIcon from "@mui/icons-material/Search";
 import ClearIcon from "@mui/icons-material/Clear";
+import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import { useData } from "../../../context/DataContext";
 import DataManagementModal from "../../../components/DataManagementModal";
 
@@ -34,7 +35,7 @@ const Topbar = () => {
   const colors = tokens(theme.palette.mode);
   const colorMode = useContext(ColorModeContext);
   const navigate = useNavigate();
-  const { team, contacts, invoices, transactions } = useData();
+  const { team, contacts, invoices, transactions, toggleSidebar } = useData();
 
   const [searchTerm, setSearchTerm] = useState("");
   const [dataModalOpen, setDataModalOpen] = useState(false);
@@ -102,58 +103,80 @@ const Topbar = () => {
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
-        padding: "16px",
+        padding: { xs: "10px 12px", sm: "16px" },
         boxSizing: "border-box",
         position: "relative",
+        gap: { xs: 1, sm: 2 },
       }}
     >
-      {/* SEARCH BAR */}
-      <ClickAwayListener onClickAway={() => setSearchTerm("")}>
-        <Box sx={{ position: "relative" }}>
-          <Box
-            ref={searchInputRef}
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              backgroundColor: colors.primary[400],
-              borderRadius: "3px",
-              width: "280px",
-              border: `1px solid ${colors.primary[500]}`,
-            }}
-          >
-            <InputBase
+      {/* LEFT SECTION: MOBILE HAMBURGER + SEARCH BAR */}
+      <Box sx={{ display: "flex", alignItems: "center", minWidth: 0 }}>
+        <IconButton
+          onClick={toggleSidebar}
+          sx={{
+            display: { xs: "inline-flex", md: "none" },
+            mr: { xs: 0.5, sm: 1 },
+            p: { xs: 1, sm: 1.25 },
+            color: colors.grey[100],
+          }}
+          title="Open Navigation Menu"
+        >
+          <MenuOutlinedIcon />
+        </IconButton>
+
+        {/* SEARCH BAR */}
+        <ClickAwayListener onClickAway={() => setSearchTerm("")}>
+          <Box sx={{ position: "relative" }}>
+            <Box
+              ref={searchInputRef}
               sx={{
-                ml: 2,
-                flex: 1,
-                color: colors.grey[100],
+                display: "flex",
+                alignItems: "center",
+                backgroundColor: colors.primary[400],
+                borderRadius: "4px",
+                width: { xs: "135px", sm: "220px", md: "280px" },
+                border: `1px solid ${colors.primary[500]}`,
+                transition: "width 0.2s ease",
+                "&:focus-within": {
+                  width: { xs: "165px", sm: "260px", md: "320px" },
+                  borderColor: colors.greenAccent[500],
+                },
               }}
-              placeholder="Search"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
+            >
+              <InputBase
+                sx={{
+                  ml: { xs: 1, sm: 2 },
+                  flex: 1,
+                  fontSize: { xs: "12px", sm: "14px" },
+                  color: colors.grey[100],
+                }}
+                placeholder="Search..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
 
-            {searchTerm ? (
-              <IconButton
-                type="button"
-                sx={{ p: 1 }}
-                onClick={() => setSearchTerm("")}
-              >
-                <ClearIcon fontSize="small" sx={{ color: colors.grey[300] }} />
-              </IconButton>
-            ) : (
-              <IconButton type="button" sx={{ p: 1 }}>
-                <SearchIcon sx={{ color: colors.grey[300] }} />
-              </IconButton>
-            )}
-          </Box>
+              {searchTerm ? (
+                <IconButton
+                  type="button"
+                  sx={{ p: { xs: 0.5, sm: 1 } }}
+                  onClick={() => setSearchTerm("")}
+                >
+                  <ClearIcon fontSize="small" sx={{ color: colors.grey[300], fontSize: { xs: "16px", sm: "20px" } }} />
+                </IconButton>
+              ) : (
+                <IconButton type="button" sx={{ p: { xs: 0.5, sm: 1 } }}>
+                  <SearchIcon sx={{ color: colors.grey[300], fontSize: { xs: "16px", sm: "20px" } }} />
+                </IconButton>
+              )}
+            </Box>
 
-          {/* SEARCH RESULTS POPPER */}
-          <Popper
-            open={showPopper}
-            anchorEl={searchInputRef.current}
-            placement="bottom-start"
-            style={{ zIndex: 1300, width: "380px" }}
-          >
+            {/* SEARCH RESULTS POPPER */}
+            <Popper
+              open={showPopper}
+              anchorEl={searchInputRef.current}
+              placement="bottom-start"
+              style={{ zIndex: 1400, width: "min(380px, calc(100vw - 32px))" }}
+            >
             <Paper
               sx={{
                 mt: 1,
@@ -385,6 +408,7 @@ const Topbar = () => {
           </Popper>
         </Box>
       </ClickAwayListener>
+      </Box>
 
       {/* ICONS */}
       <Box
@@ -393,32 +417,43 @@ const Topbar = () => {
           alignItems: "center",
           flexDirection: "row",
           flexWrap: "nowrap",
+          gap: { xs: "2px", sm: "4px" },
         }}
       >
-        <IconButton onClick={colorMode.toggleColorMode} title="Toggle Dark/Light Mode">
+        <IconButton
+          onClick={colorMode.toggleColorMode}
+          title="Toggle Dark/Light Mode"
+          sx={{ padding: { xs: "6px", sm: "8px" } }}
+        >
           {theme.palette.mode === "dark" ? (
-            <DarkModeOutlinedIcon />
+            <DarkModeOutlinedIcon sx={{ fontSize: { xs: "20px", sm: "24px" } }} />
           ) : (
-            <LightModeOutlinedIcon />
+            <LightModeOutlinedIcon sx={{ fontSize: { xs: "20px", sm: "24px" } }} />
           )}
         </IconButton>
 
         <IconButton
           title="Notifications"
           onClick={(e) => setNotificationAnchorEl(e.currentTarget)}
+          sx={{ padding: { xs: "6px", sm: "8px" } }}
         >
-          <NotificationsOutlinedIcon />
+          <NotificationsOutlinedIcon sx={{ fontSize: { xs: "20px", sm: "24px" } }} />
         </IconButton>
 
         <IconButton
           title="Data Management & LocalStorage"
           onClick={() => setDataModalOpen(true)}
+          sx={{ padding: { xs: "6px", sm: "8px" } }}
         >
-          <SettingsOutlinedIcon />
+          <SettingsOutlinedIcon sx={{ fontSize: { xs: "20px", sm: "24px" } }} />
         </IconButton>
 
-        <IconButton onClick={() => navigate("/form")} title="User Profile">
-          <PersonOutlinedIcon />
+        <IconButton
+          onClick={() => navigate("/form")}
+          title="User Profile"
+          sx={{ padding: { xs: "6px", sm: "8px" } }}
+        >
+          <PersonOutlinedIcon sx={{ fontSize: { xs: "20px", sm: "24px" } }} />
         </IconButton>
       </Box>
 
